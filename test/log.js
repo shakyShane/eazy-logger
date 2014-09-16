@@ -92,4 +92,8 @@ describe("Logging", function(){
         clone.log("info", "<script></script>");
         sinon.assert.calledWithExactly(spy, "[logger] [new module] INFO <script></script>");
     });
+    it("can be used with no configuration", function () {
+        var logger = new easyLogger.Logger(defaultConfig);
+        logger.log("no config");
+    });
 });

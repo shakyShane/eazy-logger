@@ -63,6 +63,8 @@ var Logger = function(config) {
         return new Logger(config);
     }
 
+    config = config || {};
+
     this.config = merge(defaults, config, true);
 
     this.compiler = new tfunk.Compiler({}, this.config);
