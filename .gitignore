@@ -1,0 +1,11 @@
+node_modules
+.idea
+npm-debug.log
+.sass-cache
+bower_components
+test/fixtures/files/*
+test/fixtures/js/*
+example.js
+.DS_store
+doc/
+.coveralls.yml
