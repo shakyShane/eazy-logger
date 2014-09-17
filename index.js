@@ -163,6 +163,7 @@ Logger.prototype.logOne = function (args, msg, level, unprefixed) {
 
     args = args.slice(2);
 
+
     if (this.config.useLevelPrefixes && !unprefixed) {
         msg = this.config.prefixes[level] + msg;
     }

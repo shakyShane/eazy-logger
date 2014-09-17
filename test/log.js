@@ -92,6 +92,19 @@ describe("Logging", function(){
         clone.log("info", "<script></script>");
         sinon.assert.calledWithExactly(spy, "[logger] [new module] INFO <script></script>");
     });
+
+    it("can use built-in string replacement", function(){
+        var logger = new easyLogger.Logger(defaultConfig);
+        logger.setLevelPrefixes(true);
+        logger.log("info", "<script src=\"%s\"></script>", "http://shakyshane.com/js.js");
+        sinon.assert.calledWithExactly(spy, "[logger] INFO <script src=\"%s\"></script>", "http://shakyshane.com/js.js");
+    });
+    it("can use built-in string replacement (2)", function(){
+        var logger = new easyLogger.Logger(defaultConfig);
+        logger.setLevelPrefixes(true);
+        logger.log("info", "<script src=\"%s%s\"></script>", "http://shakyshane.com/", "js.js");
+        sinon.assert.calledWithExactly(spy, "[logger] INFO <script src=\"%s%s\"></script>", "http://shakyshane.com/", "js.js");
+    });
     it("can be used with no configuration", function () {
         var logger = new easyLogger.Logger(defaultConfig);
         logger.log("no config");
