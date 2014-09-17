@@ -66,12 +66,32 @@ var Logger = function(config) {
     config = config || {};
 
     this.config = merge(defaults, config, true);
-
+    this.addLevelMethods(this.config.levels);
     this.compiler = new tfunk.Compiler({}, this.config);
 
     return this;
 };
 
+/**
+ * Add convenience method such as
+ * logger.warn("msg")
+ * logger.error("msg")
+ * logger.info("msg")
+ *
+ * instead of
+ * logger.log("warn", "msg");
+ * @param items
+ */
+Logger.prototype.addLevelMethods = function (items) {
+    Object.keys(items).forEach(function (item) {
+        if (!this[item]) {
+            this[item] = function () {
+                var args = Array.prototype.slice.call(arguments);
+                this.log.apply(this, args);
+            }.bind(this, item);
+        }
+    }, this);
+};
 /**
  * Reset the state of the logger.
  * @returns {Logger}

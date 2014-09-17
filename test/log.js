@@ -109,4 +109,17 @@ describe("Logging", function(){
         var logger = new easyLogger.Logger(defaultConfig);
         logger.log("no config");
     });
+    it("can use alias methods (INFO)", function () {
+        var logger = new easyLogger.Logger(defaultConfig);
+        logger.setLevelPrefixes(true);
+        logger.info("<script></script>");
+        sinon.assert.calledWithExactly(spy, "[logger] INFO <script></script>");
+    });
+    it("can use alias methods (INFO)", function () {
+
+        var logger = new easyLogger.Logger(defaultConfig);
+        logger.setLevelPrefixes(true);
+        logger.info("<script></script>");
+        sinon.assert.calledWithExactly(spy, "[logger] INFO <script></script>");
+    });
 });
