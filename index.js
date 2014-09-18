@@ -73,6 +73,24 @@ var Logger = function(config) {
 };
 
 /**
+ * Set an option once
+ * @param path
+ * @param value
+ */
+Logger.prototype.setOnce = function (path, value) {
+
+    if (typeof this.config[path] !== "undefined") {
+
+        this._memo = {
+            key: path,
+            value: this.config[path]
+        };
+
+        this.config[path] = value;
+    }
+    return this;
+};
+/**
  * Add convenience method such as
  * logger.warn("msg")
  * logger.error("msg")
@@ -88,6 +106,7 @@ Logger.prototype.addLevelMethods = function (items) {
             this[item] = function () {
                 var args = Array.prototype.slice.call(arguments);
                 this.log.apply(this, args);
+                return this;
             }.bind(this, item);
         }
     }, this);
@@ -194,9 +213,22 @@ Logger.prototype.logOne = function (args, msg, level, unprefixed) {
 
     console.log.apply(console, args);
 
+    this.resetTemps();
+
     return this;
 };
 
+/**
+ * @param args
+ * @param msg
+ * @param level
+ * @param unprefixed
+ */
+Logger.prototype.resetTemps = function () {
+    if (typeof this._memo !== "undefined") {
+        this.config[this._memo.key] = this._memo.value;
+    }
+};
 /**
  * Get a clone of the logger
  * @param opts

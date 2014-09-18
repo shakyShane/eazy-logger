@@ -116,10 +116,22 @@ describe("Logging", function(){
         sinon.assert.calledWithExactly(spy, "[logger] INFO <script></script>");
     });
     it("can use alias methods (INFO)", function () {
-
         var logger = new easyLogger.Logger(defaultConfig);
         logger.setLevelPrefixes(true);
         logger.info("<script></script>");
         sinon.assert.calledWithExactly(spy, "[logger] INFO <script></script>");
+    });
+    it("can chain from alias methods", function () {
+        var logger = new easyLogger.Logger(defaultConfig);
+        logger.setLevelPrefixes(true).info("<script></script>").setLevelPrefixes(false);
+        sinon.assert.calledWithExactly(spy, "[logger] INFO <script></script>");
+    });
+    it("can set an option once", function () {
+        var logger = new easyLogger.Logger(defaultConfig);
+        logger.setOnce("useLevelPrefixes", true).info("<script></script>");
+        sinon.assert.calledWithExactly(spy, "[logger] INFO <script></script>");
+
+        logger.info("<script></script>");
+        sinon.assert.calledWithExactly(spy, "[logger] <script></script>");
     });
 });
