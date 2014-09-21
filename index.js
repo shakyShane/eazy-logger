@@ -65,6 +65,7 @@ var Logger = function(config) {
 
     config = config || {};
 
+    this._mute = false;
     this.config = merge(defaults, config, true);
     this.addLevelMethods(this.config.levels);
     this.compiler = new tfunk.Compiler({}, this.config);
@@ -118,7 +119,8 @@ Logger.prototype.addLevelMethods = function (items) {
 Logger.prototype.reset = function () {
 
     this.setLevel("info")
-        .setLevelPrefixes(false);
+        .setLevelPrefixes()
+        .mute(false);
 
     return this;
 };
@@ -128,7 +130,7 @@ Logger.prototype.reset = function () {
  * @returns {boolean}
  */
 Logger.prototype.canLog = function (level) {
-    return this.config.levels[level] >= this.config.levels[this.config.level];
+    return this.config.levels[level] >= this.config.levels[this.config.level] && !this._mute;
 };
 
 /**
@@ -138,10 +140,6 @@ Logger.prototype.canLog = function (level) {
  * @returns {Logger}
  */
 Logger.prototype.log = function (level, msg) {
-
-    if (!this.canLog(level)) {
-        return;
-    }
 
     var args = Array.prototype.slice.call(arguments);
 
@@ -180,10 +178,6 @@ Logger.prototype.setLevelPrefixes = function (state) {
  */
 Logger.prototype.unprefixed = function (level, msg) {
 
-    if (!this.canLog(level)) {
-        return;
-    }
-
     var args = Array.prototype.slice.call(arguments);
 
     this.logOne(args, msg, level, true);
@@ -200,8 +194,11 @@ Logger.prototype.unprefixed = function (level, msg) {
  */
 Logger.prototype.logOne = function (args, msg, level, unprefixed) {
 
-    args = args.slice(2);
+    if (!this.canLog(level)) {
+        return;
+    }
 
+    args = args.slice(2);
 
     if (this.config.useLevelPrefixes && !unprefixed) {
         msg = this.config.prefixes[level] + msg;
@@ -219,20 +216,22 @@ Logger.prototype.logOne = function (args, msg, level, unprefixed) {
 };
 
 /**
- * @param args
- * @param msg
- * @param level
- * @param unprefixed
+ * Reset any temporary value
  */
 Logger.prototype.resetTemps = function () {
     if (typeof this._memo !== "undefined") {
         this.config[this._memo.key] = this._memo.value;
     }
 };
+
 /**
- * Get a clone of the logger
- * @param opts
+ * Mute the logger
  */
+Logger.prototype.mute = function (bool) {
+    this._mute = bool;
+    return this;
+};
+
 Logger.prototype.clone = function (opts) {
 
     var config = this.config;

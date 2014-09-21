@@ -134,4 +134,19 @@ describe("Logging", function(){
         logger.info("<script></script>");
         sinon.assert.calledWithExactly(spy, "[logger] <script></script>");
     });
+    it("can be muted", function () {
+        var logger = new easyLogger.Logger(defaultConfig);
+        logger.mute(true);
+        logger.info("<script></script>");
+        sinon.assert.notCalled(spy);
+    });
+    it("can be un-muted", function () {
+        var logger = new easyLogger.Logger(defaultConfig);
+        logger.mute(true);
+        logger.info("<script></script>");
+        sinon.assert.notCalled(spy);
+        logger.mute(false);
+        logger.info("<script></script>");
+        sinon.assert.calledWithExactly(spy, "[logger] <script></script>");
+    });
 });
