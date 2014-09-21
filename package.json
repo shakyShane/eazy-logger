@@ -24,7 +24,8 @@
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "gulp lint && mocha --recursive test --reporter spec"
+    "test": "gulp lint && mocha --recursive test --reporter spec",
+    "cover": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "dependencies": {
     "lodash": "^2.4.1",
@@ -34,6 +35,7 @@
   "devDependencies": {
     "chai": "^1.9.1",
     "chalk": "^0.5.1",
+    "coveralls": "^2.11.1",
     "gulp": "^3.8.8",
     "gulp-jshint": "^1.8.4",
     "mocha": "^1.21.4",
