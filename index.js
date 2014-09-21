@@ -232,6 +232,11 @@ Logger.prototype.mute = function (bool) {
     return this;
 };
 
+/**
+ * Clone the instance to share setup
+ * @param opts
+ * @returns {Logger}
+ */
 Logger.prototype.clone = function (opts) {
 
     var config = this.config;
@@ -239,7 +244,7 @@ Logger.prototype.clone = function (opts) {
     if (typeof opts === "function") {
         config = opts(config) || {};
     } else {
-        config = merge(config, opts, true);
+        config = merge(config, opts || {}, true);
     }
 
     return new Logger(config);

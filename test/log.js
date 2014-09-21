@@ -58,6 +58,12 @@ describe("Logging", function(){
         logger.log("info", "<script></script>");
         sinon.assert.calledWithExactly(spy, "[logger] INFO <script></script>");
     });
+    it("Can return a cloned logger", function(){
+        var clone = logger.clone();
+        clone.setLevelPrefixes(true);
+        clone.log("info", "<script></script>");
+        sinon.assert.calledWithExactly(spy, "[logger] INFO <script></script>");
+    });
     it("Can return a cloned logger with different prefix", function(){
         var clone = logger.clone({prefix: "SHANE "});
         clone.setLevelPrefixes(true);
