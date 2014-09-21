@@ -27,15 +27,17 @@
     "test": "gulp lint && mocha --recursive test --reporter spec"
   },
   "dependencies": {
-    "tfunk": "^2.0.2",
-    "opt-merger": "^0.2.1"
+    "lodash": "^2.4.1",
+    "opt-merger": "^0.2.1",
+    "tfunk": "^2.0.2"
   },
   "devDependencies": {
     "chai": "^1.9.1",
-    "sinon": "^1.10.3",
-    "gulp-jshint": "^1.8.4",
+    "chalk": "^0.5.1",
     "gulp": "^3.8.8",
-    "mocha": "^1.21.4"
+    "gulp-jshint": "^1.8.4",
+    "mocha": "^1.21.4",
+    "sinon": "^1.10.3"
   },
   "keywords": [
     "plugins"

@@ -4,7 +4,12 @@
 var tfunk = require("tfunk");
 
 /**
- * opt-merger for no-brains option merging
+ * Lodash for utils
+ */
+var _     = require("lodash");
+
+/**
+ * opt-merger for option merging
  */
 var merge = require("opt-merger").merge;
 
@@ -69,6 +74,7 @@ var Logger = function(config) {
     this.config = merge(defaults, config, true);
     this.addLevelMethods(this.config.levels);
     this.compiler = new tfunk.Compiler({}, this.config);
+    this._memo = {};
 
     return this;
 };
@@ -80,15 +86,15 @@ var Logger = function(config) {
  */
 Logger.prototype.setOnce = function (path, value) {
 
-    if (typeof this.config[path] !== "undefined") {
+    if (!_.isUndefined(this.config[path])) {
 
-        this._memo = {
-            key: path,
-            value: this.config[path]
-        };
+        if (_.isUndefined(this._memo[path])) {
+            this._memo[path] = this.config[path];
+        }
 
         this.config[path] = value;
     }
+
     return this;
 };
 /**
@@ -118,8 +124,8 @@ Logger.prototype.addLevelMethods = function (items) {
  */
 Logger.prototype.reset = function () {
 
-    this.setLevel("info")
-        .setLevelPrefixes()
+    this.setLevel(defaults.level)
+        .setLevelPrefixes(defaults.useLevelPrefixes)
         .mute(false);
 
     return this;
@@ -219,9 +225,10 @@ Logger.prototype.logOne = function (args, msg, level, unprefixed) {
  * Reset any temporary value
  */
 Logger.prototype.resetTemps = function () {
-    if (typeof this._memo !== "undefined") {
-        this.config[this._memo.key] = this._memo.value;
-    }
+
+    Object.keys(this._memo).forEach(function (key) {
+        this.config[key] = this._memo[key];
+    }, this);
 };
 
 /**
