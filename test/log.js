@@ -231,6 +231,23 @@ describe("Logging", function(){
         var logger = new easyLogger.Logger(defaultConfig);
         logger.setPrefix("SHANE");
         logger.info("<script></script>");
-        console.log(arg(spy, 0, 0));
+
+        var actual   = arg(spy, 0, 0);
+        var expected = "SHANE<script></script>";
+        assert.equal(actual, expected);
+    });
+    it("can update the prefix with color included", function(){
+        var logger = new easyLogger.Logger(defaultConfig);
+        logger.info("<script></script>");
+
+        var actual   = arg(spy, 0, 0);
+        var expected = "[logger] <script></script>";
+        assert.equal(actual, expected);
+
+        logger.setPrefix("ERROR: ");
+        logger.info("<script></script>");
+        actual   = arg(spy, 1, 0);
+        expected = "ERROR: <script></script>";
+        assert.equal(actual, expected);
     });
 });

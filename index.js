@@ -182,7 +182,7 @@ Logger.prototype.setLevelPrefixes = function (state) {
  */
 Logger.prototype.setPrefix = function (prefix) {
     if (_.isString(prefix)) {
-        this.compiler.prefix = prefix;
+        this.compiler.prefix = this.compiler.compile(prefix, true);
     }
 };
 
