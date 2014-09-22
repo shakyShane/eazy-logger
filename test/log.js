@@ -227,4 +227,10 @@ describe("Logging", function(){
         var expected = "[logger] <script></script>";
         assert.equal(actual, expected);
     });
+    it("can update the prefix", function(){
+        var logger = new easyLogger.Logger(defaultConfig);
+        logger.setPrefix("SHANE");
+        logger.info("<script></script>");
+        console.log(arg(spy, 0, 0));
+    });
 });

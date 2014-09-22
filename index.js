@@ -178,6 +178,15 @@ Logger.prototype.setLevelPrefixes = function (state) {
 };
 
 /**
+ * @param prefix
+ */
+Logger.prototype.setPrefix = function (prefix) {
+    if (_.isString(prefix)) {
+        this.compiler.prefix = prefix;
+    }
+};
+
+/**
  * @param {String} level
  * @param {String} msg
  * @returns {Logger}
