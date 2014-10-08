@@ -227,6 +227,29 @@ describe("Logging", function(){
         var expected = "[logger] <script></script>";
         assert.equal(actual, expected);
     });
+    it("can accept a function for the prefix", function(){
+        var logger = new easyLogger.Logger({
+            prefix: function () {
+                return "PREFIX";
+            }
+        });
+        logger.info("<script></script>");
+
+        var actual   = arg(spy, 0, 0);
+        var expected = "PREFIX<script></script>";
+        assert.equal(actual, expected);
+    });
+    it("can SET a function for the prefix", function(){
+        var logger = new easyLogger.Logger(defaultConfig);
+        logger.setPrefix(function () {
+            return "PREFIX";
+        });
+        logger.info("<script></script>");
+
+        var actual   = arg(spy, 0, 0);
+        var expected = "PREFIX<script></script>";
+        assert.equal(actual, expected);
+    });
     it("can update the prefix", function(){
         var logger = new easyLogger.Logger(defaultConfig);
         logger.setPrefix("SHANE");
