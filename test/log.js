@@ -1,5 +1,6 @@
 var assert      = require("chai").assert;
 var sinon       = require("sinon");
+var _           = require("lodash");
 var easyLogger  = require("../index");
 var stripColor  = require("chalk").stripColor;
 
@@ -234,6 +235,32 @@ describe("Logging", function(){
 
         var actual   = arg(spy, 0, 0);
         var expected = "SHANE<script></script>";
+        assert.equal(actual, expected);
+    });
+    it("accepts custom methods", function(){
+        var def = _.cloneDeep(defaultConfig);
+        def.custom = {
+            "shane": function (out) {
+                return "kittie-" + out;
+            }
+        };
+        var logger = new easyLogger.Logger(def);
+        logger.info("{shane:cat}");
+        var actual   = arg(spy, 0, 0);
+        var expected = "[logger] kittie-cat";
+        assert.equal(actual, expected);
+    });
+    it("accepts custom methods with compiler", function(){
+        var def = _.cloneDeep(defaultConfig);
+        def.custom = {
+            "shane": function (out) {
+                return this.compile("{red:kittie-}" + out);
+            }
+        };
+        var logger = new easyLogger.Logger(def);
+        logger.info("{shane:cat}");
+        var actual   = arg(spy, 0, 0);
+        var expected = "[logger] kittie-cat";
         assert.equal(actual, expected);
     });
     it("can update the prefix with color included", function(){

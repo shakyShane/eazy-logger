@@ -73,7 +73,7 @@ var Logger = function(config) {
     this._mute = false;
     this.config = merge(defaults, config, true);
     this.addLevelMethods(this.config.levels);
-    this.compiler = new tfunk.Compiler({}, this.config);
+    this.compiler = new tfunk.Compiler(this.config.custom || {}, this.config);
     this._memo = {};
 
     return this;
