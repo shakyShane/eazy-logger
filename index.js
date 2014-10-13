@@ -184,6 +184,9 @@ Logger.prototype.setPrefix = function (prefix) {
     if (_.isString(prefix)) {
         this.compiler.prefix = this.compiler.compile(prefix, true);
     }
+    if (_.isFunction(prefix)) {
+        this.compiler.prefix = prefix;
+    }
 };
 
 /**
