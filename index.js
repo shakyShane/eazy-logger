@@ -247,6 +247,7 @@ Logger.prototype.resetTemps = function () {
  * Mute the logger
  */
 Logger.prototype.mute = function (bool) {
+
     this._mute = bool;
     return this;
 };
@@ -258,7 +259,7 @@ Logger.prototype.mute = function (bool) {
  */
 Logger.prototype.clone = function (opts) {
 
-    var config = this.config;
+    var config = _.cloneDeep(this.config);
 
     if (typeof opts === "function") {
         config = opts(config) || {};

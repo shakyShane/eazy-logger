@@ -89,6 +89,33 @@ describe("Logging", function(){
         var expected = "[logger] INFO <script></script>";
         assert.equal(actual, expected);
     });
+    it("Can return multiple cloned loggers", function() {
+        var clone = logger.clone(function (config) {
+            config.prefix  = config.prefix + "shane ";
+            return config;
+        });
+
+        clone.setLevelPrefixes(true);
+        clone.log("info", "<script></script>");
+
+        var actual   = arg(spy, 0, 0);
+        var expected = "[logger] shane INFO <script></script>";
+
+        assert.equal(actual, expected);
+
+        // Second clone
+        var clone2 = logger.clone(function (config) {
+            config.prefix = config.prefix + "Second ";
+            return config;
+        });
+
+        clone2.setLevelPrefixes(true);
+        clone2.log("info", "<script></script>");
+
+        actual   = arg(spy, 1, 0);
+        expected = "[logger] Second INFO <script></script>";
+        assert.equal(actual, expected);
+    });
     it("Can return a cloned logger with different prefix", function(){
         var clone = logger.clone({prefix: "SHANE "});
         clone.setLevelPrefixes(true);
