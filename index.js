@@ -270,4 +270,5 @@ Logger.prototype.clone = function (opts) {
     return new Logger(config);
 };
 
-module.exports.Logger = Logger;
+module.exports.Logger  = Logger;
+module.exports.compile = tfunk;
