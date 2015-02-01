@@ -11,7 +11,7 @@ var _     = require("lodash");
 /**
  * opt-merger for option merging
  */
-var merge = require("opt-merger").merge;
+var merge = require("opt-merger");
 
 /**
  * Default configuration.
@@ -71,7 +71,7 @@ var Logger = function(config) {
     config = config || {};
 
     this._mute = false;
-    this.config = merge(defaults, config, true);
+    this.config = merge.set({simple: true}).merge(defaults, config);
     this.addLevelMethods(this.config.levels);
     this.compiler = new tfunk.Compiler(this.config.custom || {}, this.config);
     this._memo = {};
@@ -264,7 +264,7 @@ Logger.prototype.clone = function (opts) {
     if (typeof opts === "function") {
         config = opts(config) || {};
     } else {
-        config = merge(config, opts || {}, true);
+        config = merge.set({simple: true}).merge(config, opts || {});
     }
 
     return new Logger(config);

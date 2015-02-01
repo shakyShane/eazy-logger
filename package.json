@@ -19,27 +19,32 @@
       "url": "https://github.com/shakyshane/easy-logger/blob/master/LICENSE-GPL"
     }
   ],
+  "files": [
+    "index.js",
+    "example.js",
+    "README.md"
+  ],
   "main": "index.js",
   "engines": {
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "gulp lint && mocha --recursive test --reporter spec",
+    "lint": "jshint index.js test/*.js",
+    "test": "npm run lint && mocha",
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "dependencies": {
-    "lodash": "^2.4.1",
-    "opt-merger": "^0.2.1",
-    "tfunk": "^3.0.0"
+    "lodash": "^3.0.1",
+    "opt-merger": "^1.1.0",
+    "tfunk": "^3.0.1"
   },
   "devDependencies": {
-    "chai": "^1.9.1",
+    "chai": "^1.10.0",
     "chalk": "^0.5.1",
-    "coveralls": "^2.11.1",
-    "gulp": "^3.8.8",
-    "gulp-jshint": "^1.8.4",
-    "mocha": "^1.21.4",
-    "sinon": "^1.10.3"
+    "coveralls": "^2.11.2",
+    "jshint": "^2.6.0",
+    "mocha": "^2.1.0",
+    "sinon": "^1.12.2"
   },
   "keywords": [
     "plugins"
