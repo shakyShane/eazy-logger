@@ -15,8 +15,8 @@
   },
   "licenses": [
     {
-      "type": "GPL",
-      "url": "https://github.com/shakyshane/easy-logger/blob/master/LICENSE-GPL"
+      "type": "Apache 2.0",
+      "url": "https://github.com/shakyshane/easy-logger/blob/master/LICENSE"
     }
   ],
   "files": [
