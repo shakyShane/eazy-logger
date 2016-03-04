@@ -1,6 +1,6 @@
 var assert      = require("chai").assert;
 var sinon       = require("sinon");
-var _           = require("lodash");
+var cloneDeep   = require("lodash.clonedeep");
 var easyLogger  = require("../index");
 var stripColor  = require("chalk").stripColor;
 
@@ -288,7 +288,7 @@ describe("Logging", function(){
         assert.equal(actual, expected);
     });
     it("accepts custom methods", function(){
-        var def = _.cloneDeep(defaultConfig);
+        var def = cloneDeep(defaultConfig);
         def.custom = {
             "shane": function (out) {
                 return "kittie-" + out;
@@ -301,7 +301,7 @@ describe("Logging", function(){
         assert.equal(actual, expected);
     });
     it("accepts custom methods with compiler", function(){
-        var def = _.cloneDeep(defaultConfig);
+        var def = cloneDeep(defaultConfig);
         def.custom = {
             "shane": function (out) {
                 return this.compile("{red:kittie-}" + out);
