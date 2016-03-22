@@ -33,7 +33,7 @@
     "cover": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage"
   },
   "dependencies": {
-    "lodash": "^4.6.1",
+    "lodash.clonedeep": "4.3.1",
     "opt-merger": "^1.1.0",
     "tfunk": "^3.0.1"
   },
