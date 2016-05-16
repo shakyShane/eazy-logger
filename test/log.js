@@ -326,10 +326,5 @@ describe("Logging", function(){
         actual   = arg(spy, 1, 0);
         expected = "ERROR: <script></script>";
         assert.equal(actual, expected);
-        console.log(Object.keys(require.cache).filter(x => {
-            return x.indexOf('mocha') === -1
-                && x.indexOf('chai') === -1
-                && x.indexOf('sinon') === -1
-        }));
     });
 });
