@@ -1,7 +1,7 @@
 /**
  * tFunk for colours/compiler
  */
-var tfunk = require("tfunk");
+var chalk = require("chalk");
 
 /**
  * Lodash clonedeep & merge
@@ -40,10 +40,10 @@ var defaults = {
      */
     prefixes: {
         "trace": "[trace] ",
-        "debug": "{yellow:[debug]} ",
-        "info":  "{cyan:[info]} ",
-        "warn":  "{magenta:[warn]} ",
-        "error": "{red:[error]} "
+        "debug": chalk.yellow("[debug] "),
+        "info":  chalk.cyan("[info] "),
+        "warn":  chalk.magenta("[warn] "),
+        "error": chalk.red("[error] ")
     },
 
     /**
@@ -68,7 +68,6 @@ var Logger = function(config) {
     this._mute = false;
     this.config = _.merge({}, defaults, config);
     this.addLevelMethods(this.config.levels);
-    this.compiler = new tfunk.Compiler(this.config.custom || {}, this.config);
     this._memo = {};
 
     return this;
@@ -176,12 +175,7 @@ Logger.prototype.setLevelPrefixes = function (state) {
  * @param prefix
  */
 Logger.prototype.setPrefix = function (prefix) {
-    if (typeof prefix === "string") {
-        this.compiler.prefix = this.compiler.compile(prefix, true);
-    }
-    if (typeof prefix === "function") {
-        this.compiler.prefix = prefix;
-    }
+    this.config.prefix = strOrFn(prefix);
 };
 
 /**
@@ -200,7 +194,7 @@ Logger.prototype.unprefixed = function (level, msg) {
 
 /**
  * @param {Array} args
- * @param {String} msg
+ * @param {()=>String} msg
  * @param {String} level
  * @param {boolean} [unprefixed]
  * @returns {Logger}
@@ -213,13 +207,16 @@ Logger.prototype.logOne = function (args, msg, level, unprefixed) {
 
     args = args.slice(2);
 
+    var incomingMessage = typeof msg === "string" ? msg : msg();
+
     if (this.config.useLevelPrefixes && !unprefixed) {
-        msg = this.config.prefixes[level] + msg;
+        incomingMessage = this.config.prefixes[level] + incomingMessage;
     }
 
-    msg = this.compiler.compile(msg, unprefixed);
+    var prefix = strOrFn(this.config.prefix);
+    var result = unprefixed ? [incomingMessage] : [prefix, incomingMessage];
 
-    args.unshift(msg);
+    args.unshift(result.join(""));
 
     console.log.apply(console, args);
 
@@ -265,5 +262,17 @@ Logger.prototype.clone = function (opts) {
     return new Logger(config);
 };
 
+/**
+ * @param input
+ */
+function strOrFn(input) {
+    if (typeof input === "string") {
+        return input;
+    }
+    if (typeof input === "function") {
+        return input();
+    }
+    throw new Error("unreachable");
+}
+
 module.exports.Logger  = Logger;
-module.exports.compile = tfunk;

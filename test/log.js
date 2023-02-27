@@ -1,11 +1,11 @@
 var assert      = require("chai").assert;
 var sinon       = require("sinon");
-var _           = require("../lodash.custom");
 var easyLogger  = require("../index");
-var stripColor  = require("chalk").stripColor;
+var stripColor  = require("strip-ansi");
+var chalk       = require("chalk");
 
 var defaultConfig = {
-    prefix: "{blue:[}{magenta:logger}{cyan:] }",
+    prefix: `${chalk.blue("[")}${chalk.magenta("logger")}${chalk.cyan("]")} `,
     prefixes: {
         debug: "DEBUG ",
         info:  "INFO ",
@@ -40,12 +40,10 @@ describe("Logging", function(){
         logger.reset();
     });
     it("can do console.log on info", function(){
-
         logger.log("info", "Running!");
         var actual   = arg(spy, 0, 0);
         var expected = "[logger] Running!";
         assert.equal(actual, expected);
-
     });
     it("Does not log when level = info & log msg is WARN", function(){
         logger.log("warn", "Not found");
@@ -287,32 +285,6 @@ describe("Logging", function(){
         var expected = "SHANE<script></script>";
         assert.equal(actual, expected);
     });
-    it("accepts custom methods", function(){
-        var def = _.cloneDeep(defaultConfig);
-        def.custom = {
-            "shane": function (out) {
-                return "kittie-" + out;
-            }
-        };
-        var logger = new easyLogger.Logger(def);
-        logger.info("{shane:cat}");
-        var actual   = arg(spy, 0, 0);
-        var expected = "[logger] kittie-cat";
-        assert.equal(actual, expected);
-    });
-    it("accepts custom methods with compiler", function(){
-        var def = _.cloneDeep(defaultConfig);
-        def.custom = {
-            "shane": function (out) {
-                return this.compile("{red:kittie-}" + out);
-            }
-        };
-        var logger = new easyLogger.Logger(def);
-        logger.info("{shane:cat}");
-        var actual   = arg(spy, 0, 0);
-        var expected = "[logger] kittie-cat";
-        assert.equal(actual, expected);
-    });
     it("can update the prefix with color included", function(){
         var logger = new easyLogger.Logger(defaultConfig);
         logger.info("<script></script>");
@@ -325,6 +297,15 @@ describe("Logging", function(){
         logger.info("<script></script>");
         actual   = arg(spy, 1, 0);
         expected = "ERROR: <script></script>";
+        assert.equal(actual, expected);
+    });
+    it("can print javascript", function(){
+        var logger = new easyLogger.Logger(defaultConfig);
+        logger.info(`(function() { console.log("lol!") })()`);
+
+        var actual   = arg(spy, 0, 0);
+        var expected = `[logger] (function() { console.log("lol!") })()`;
+
         assert.equal(actual, expected);
     });
 });

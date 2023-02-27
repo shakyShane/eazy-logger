@@ -15,5 +15,6 @@
     "eqnull": true,
     "node": true,
     "strict": false,
-    "mocha": true
+    "mocha": true,
+    "esversion": 6
 }
