@@ -308,4 +308,22 @@ describe("Logging", function(){
 
         assert.equal(actual, expected);
     });
+
+    it("should handle prototype pollution attempts safely",  function () {
+        const lib =  easyLogger;
+        console.log("Before Attack: ", JSON.stringify( Object.getPrototypeOf({})));
+
+        try {
+            // for multiple functions, uncomment only one for each execution.
+            lib.Logger(JSON.parse("{\"__proto__\":{\"pollutedKey\":123}}"));
+        } catch (e) {
+        }
+
+        console.log("After Attack: ", JSON.stringify(Object.getPrototypeOf({})));
+
+        assert.notProperty(Object.prototype, "pollutedKey", "Prototype pollution occurred");
+
+        // Cleanup if any property was added
+        delete Object.prototype.pollutedKey;
+    });
 });

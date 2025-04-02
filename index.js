@@ -66,7 +66,17 @@ var Logger = function(config) {
     config = config || {};
 
     this._mute = false;
-    this.config = _.merge({}, defaults, config);
+    var safeConfig = {};
+    for (var attr in config) {
+        if (!config.hasOwnProperty(attr)) {
+            continue;
+        }
+        if (attr === "__proto__" || attr === "constructor" || attr === "prototype") {
+            continue;
+        }
+        safeConfig[attr] = config[attr];
+    }
+    this.config = _.merge({}, defaults, safeConfig);
     this.addLevelMethods(this.config.levels);
     this._memo = {};
 
