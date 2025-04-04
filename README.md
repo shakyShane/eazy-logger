@@ -1,16 +1,16 @@
-##eazy-logger [![Build Status](https://travis-ci.org/shakyShane/easy-logger.svg?branch=master)](https://travis-ci.org/shakyShane/easy-logger) [![Coverage Status](https://img.shields.io/coveralls/shakyShane/easy-logger.svg)](https://coveralls.io/r/shakyShane/easy-logger?branch=master)
+## eazy-logger [![Build Status](https://travis-ci.org/shakyShane/easy-logger.svg?branch=master)](https://travis-ci.org/shakyShane/easy-logger) [![Coverage Status](https://img.shields.io/coveralls/shakyShane/easy-logger.svg)](https://coveralls.io/r/shakyShane/easy-logger?branch=master)
 
 [tFunk](https://github.com/shakyShane/tfunk) + [String Substitution](http://nodejs.org/docs/latest/api/console.html#console_console_log_data)
 
 ![preview](http://cl.ly/image/3K2E2d111l15/Screen%20Shot%202014-09-17%20at%2020.49.17.png)
 
-##Install
+## Install
 
 ```
 $ npm install eazy-logger --save
 ```
 
-##Usage
+## Usage
 
 ```js
 var logger  = require("eazy-logger").Logger({
